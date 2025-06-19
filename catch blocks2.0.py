@@ -5,12 +5,10 @@ import sys
 pygame.init()
 pygame.font.init()
 
-# Screen setup
 WIDTH, HEIGHT = 800, 900
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Catch Blocks Ultimate")
 
-# Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (30, 144, 255)
@@ -23,26 +21,20 @@ DARK_BLUE = (15, 60, 120)
 ORANGE = (255, 165, 0)
 GRAY = (100, 100, 100)
 
-# Fonts
 FONT = pygame.font.SysFont("Arial", 24)
 BIG_FONT = pygame.font.SysFont("Arial", 64, bold=True)
 
-# Clock
 clock = pygame.time.Clock()
 FPS = 60
 
-# Game States
 START, PLAYING, GAME_OVER, SHOP, LEVEL_UP, DIFFICULTY_SELECT, INFO = range(7)
 
-# Player setup
 player = pygame.Rect(WIDTH//2 - 50, HEIGHT - 60, 100, 20)
 player_speed = 10
 
-# Blocks
 block_size = 45
 blocks = []
 
-# Game variables
 score = 0
 lives = 3
 level = 1
@@ -56,17 +48,14 @@ level_up_time = 0
 turrets = []
 difficulty = 'medium'
 
-# Shop upgrades
 shield_level = 0
 slow_duration = 5000
 turret_count = 0
 
-# Shop prices
 shield_cost = 50
 slow_cost = 75
 turret_cost = 100
 
-# Create block
 def create_block():
     types = ['red', 'green', 'yellow', 'cyan', 'purple']
     color = random.choice(types)
@@ -74,14 +63,12 @@ def create_block():
     y = -block_size
     return {"rect": pygame.Rect(x, y, block_size, block_size), "type": color}
 
-# Draw text helper
 def draw_centered_text(lines, y_start, color=WHITE):
     for i, line in enumerate(lines):
         surf = FONT.render(line, True, color)
         rect = surf.get_rect(center=(WIDTH//2, y_start + i * 40))
         SCREEN.blit(surf, rect)
 
-# Info screen
 def draw_info_screen():
     SCREEN.fill(BLACK)
     lines = [
@@ -97,7 +84,6 @@ def draw_info_screen():
     draw_centered_text(lines, 180)
     pygame.display.flip()
 
-# Shop screen
 def draw_shop_screen():
     SCREEN.fill((10, 10, 30))
     SCREEN.blit(BIG_FONT.render("SHOP", True, YELLOW), (WIDTH//2 - 100, 80))
@@ -112,20 +98,17 @@ def draw_shop_screen():
     SCREEN.blit(FONT.render(f"Your coins: {coins}", True, GREEN), (280, 450))
     pygame.display.flip()
 
-# Draw player
 def draw_player():
     pygame.draw.rect(SCREEN, BLUE, player, border_radius=12)
     if shield:
         pygame.draw.circle(SCREEN, CYAN, player.center, 60, width=3)
 
-# Draw blocks
 def draw_blocks():
     for b in blocks:
         color_map = {"red": RED, "green": GREEN, "yellow": YELLOW, "cyan": CYAN, "purple": PURPLE}
         pygame.draw.rect(SCREEN, color_map[b["type"]], b["rect"], border_radius=10)
         SCREEN.blit(FONT.render(b["type"][0].upper(), True, BLACK), (b["rect"].x+15, b["rect"].y+10))
 
-# Draw turrets with firing effect
 def fire_turrets():
     for turret in turrets:
         pygame.draw.rect(SCREEN, ORANGE, turret, border_radius=5)
@@ -135,14 +118,12 @@ def fire_turrets():
                 blocks.remove(b)
                 break
 
-# Draw HUD
 def draw_hud():
     SCREEN.blit(FONT.render(f"Score: {score}", True, WHITE), (10, 10))
     SCREEN.blit(FONT.render(f"Lives: {lives}", True, WHITE), (10, 40))
     SCREEN.blit(FONT.render(f"Level: {level}", True, WHITE), (10, 70))
     SCREEN.blit(FONT.render(f"Coins: {coins}", True, YELLOW), (10, 100))
 
-# Animated starry background
 stars = [{"x": random.randint(0, WIDTH), "y": random.randint(0, HEIGHT), "speed": random.randint(1, 3)} for _ in range(100)]
 
 def draw_animated_background():
@@ -154,7 +135,6 @@ def draw_animated_background():
             star["y"] = 0
             star["x"] = random.randint(0, WIDTH)
 
-# Main Game Loop
 def main():
     global score, lives, level, block_speed, shield, slow_motion, slow_timer
     global game_state, blocks, level_up_time, coins, difficulty
@@ -171,7 +151,6 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            # Difficulty select
             if game_state == DIFFICULTY_SELECT and event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     difficulty = 'easy'; block_speed = 3; game_state = START
@@ -180,7 +159,6 @@ def main():
                 elif event.key == pygame.K_3:
                     difficulty = 'hard'; block_speed = 7; game_state = START
 
-            # Start screen keys
             if game_state == START and event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     score = 0; lives = 3; level = 1; coins = 0
@@ -199,12 +177,10 @@ def main():
                     turrets.extend([pygame.Rect(x, HEIGHT - 120, 20, 40) for x in range(100, WIDTH, 150)])
                     game_state = PLAYING
 
-            # Info screen
             if game_state == INFO and event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     game_state = START
 
-            # Shop screen keys
             if game_state == SHOP and event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1 and coins >= shield_cost:
                     coins -= shield_cost
@@ -248,7 +224,6 @@ def main():
             draw_shop_screen()
 
         elif game_state == PLAYING:
-            # Player movement
             if keys[pygame.K_LEFT]: player.x -= player_speed
             if keys[pygame.K_RIGHT]: player.x += player_speed
             player.x = max(0, min(WIDTH - player.width, player.x))
@@ -289,7 +264,6 @@ def main():
             if lives <= 0:
                 game_state = GAME_OVER
 
-            # Draw everything
             draw_animated_background()
             draw_player()
             draw_blocks()
