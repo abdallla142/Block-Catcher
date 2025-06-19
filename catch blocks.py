@@ -6,12 +6,10 @@ import math
 pygame.init()
 pygame.font.init()
 
-# Screen setup
 WIDTH, HEIGHT = 600, 800
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Catch Blocks Game - Fun & Polished")
 
-# Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (30, 144, 255)
@@ -24,24 +22,19 @@ DARK_BLUE = (15, 60, 120)
 GRAY = (200, 200, 200)
 LIGHT_GRAY = (220, 220, 220)
 
-# Fonts
 FONT = pygame.font.SysFont("Arial", 24)
 BIG_FONT = pygame.font.SysFont("Arial", 64, bold=True)
 MEDIUM_FONT = pygame.font.SysFont("Arial", 36, bold=True)
 
-# Clock
 clock = pygame.time.Clock()
 FPS = 60
 
-# Player setup
 player = pygame.Rect(WIDTH//2 - 50, HEIGHT - 60, 100, 20)
 player_speed = 12
 
-# Block setup
 block_size = 45
 blocks = []
 
-# Game variables
 score = 0
 lives = 3
 level = 1
@@ -53,15 +46,12 @@ slow_motion_timer = 0
 
 game_state = 0  # 0=START, 1=PLAYING, 2=GAME_OVER, 3=LEVEL_UP
 
-# Level up animation variables
 level_up_time = 0
 LEVEL_UP_DURATION = 180  # frames (~3 seconds)
 
-# Animation states for pop effects
 score_pop_timer = 0
 powerup_pop_timer = 0
 
-# Easing function for animations
 def ease_out_quad(t):
     return 1 - (1 - t) * (1 - t)
 
@@ -93,7 +83,6 @@ def draw_game_over():
     pygame.display.flip()
 
 def draw_player():
-    # Draw player with a gradient and a shadow
     shadow_rect = player.copy()
     shadow_rect.y += 5
     pygame.draw.rect(SCREEN, BLACK, shadow_rect, border_radius=12)
@@ -102,7 +91,6 @@ def draw_player():
     highlight = pygame.Rect(player.x, player.y, player.width, player.height//2)
     pygame.draw.rect(SCREEN, (120, 180, 255), highlight, border_radius=12)
 
-    # Draw shield bubble if active
     if shield:
         radius = max(player.width, player.height) // 2 + 15
         bubble_pos = (player.centerx, player.centery)
@@ -113,7 +101,6 @@ def draw_player():
         SCREEN.blit(bubble_surf, (bubble_pos[0] - radius, bubble_pos[1] - radius))
 
 def draw_block(b):
-    # Draw block with shadow and glow
     shadow = b["rect"].copy()
     shadow.x += 3
     shadow.y += 3
@@ -143,7 +130,6 @@ def draw_labels(b):
         SCREEN.blit(text_surface, text_rect)
 
 def draw_background_gradient():
-    # Vertical gradient background (dark blue to black)
     for y in range(HEIGHT):
         ratio = y / HEIGHT
         r = int(DARK_BLUE[0] * (1-ratio) + BLACK[0] * ratio)
@@ -152,36 +138,29 @@ def draw_background_gradient():
         pygame.draw.line(SCREEN, (r, g, b), (0, y), (WIDTH, y))
 
 def draw_hud():
-    # Background box for HUD
     hud_rect = pygame.Rect(5, 5, 210, 130)
     pygame.draw.rect(SCREEN, (0,0,0,150), hud_rect)  # semi-transparent
     pygame.draw.rect(SCREEN, (40, 40, 60), hud_rect, border_radius=10)
 
-    # Score
     global score_pop_timer
     score_color = WHITE
     score_scale = 1.0
     if score_pop_timer > 0:
-        # Animate pop: scale up then back
         progress = (30 - score_pop_timer) / 30
         score_scale = 1 + 0.3 * math.sin(progress * math.pi)
         score_pop_timer -= 1
 
     score_text = FONT.render(f"Score: {score}", True, score_color)
-    # Render scaled text
     score_surface = pygame.transform.smoothscale(score_text,
                     (int(score_text.get_width()*score_scale), int(score_text.get_height()*score_scale)))
     SCREEN.blit(score_surface, (15, 15))
 
-    # Lives
     lives_text = FONT.render(f"Lives: {lives}", True, WHITE)
     SCREEN.blit(lives_text, (15, 50))
 
-    # Level
     level_text = FONT.render(f"Level: {level}", True, WHITE)
     SCREEN.blit(level_text, (15, 85))
 
-    # Powerups active
     y_offset = 120
     if shield:
         shield_text = FONT.render("Shield ACTIVE", True, CYAN)
@@ -197,12 +176,10 @@ def level_up_animation():
     SCREEN.fill(BLACK)
     t = level_up_time / LEVEL_UP_DURATION  # 0 to 1
 
-    # Animate size and opacity with easing
     size = int(ease_out_quad(t) * 150)
     alpha = int(ease_out_quad(t) * 255)
     alpha = max(0, min(255, alpha))
 
-    # Fit text inside screen nicely
     text = f"LEVEL {level}"
     text_surface = BIG_FONT.render(text, True, WHITE)
     # Scale text to max width 80% screen width
@@ -213,7 +190,6 @@ def level_up_animation():
     text_surface = pygame.transform.smoothscale(text_surface, scaled_size)
     text_surface.set_alpha(alpha)
 
-    # Bounce effect on scale
     bounce_scale = 1 + 0.2 * math.sin(level_up_time * 0.15)
     bounce_size = (int(scaled_size[0] * bounce_scale), int(scaled_size[1] * bounce_scale))
     text_surface = pygame.transform.smoothscale(text_surface, bounce_size)
@@ -221,7 +197,6 @@ def level_up_animation():
     rect = text_surface.get_rect(center=(WIDTH//2, HEIGHT//2))
     SCREEN.blit(text_surface, rect)
 
-    # Flash background brightness pulse
     brightness = int(30 * (1 - t))
     flash_color = (brightness, brightness, brightness)
     overlay = pygame.Surface((WIDTH, HEIGHT))
@@ -276,19 +251,16 @@ def main():
             if keys[pygame.K_RIGHT] and player.right < WIDTH:
                 player.x += player_speed
 
-            # Spawn blocks faster with level
             spawn_timer += 1
             spawn_interval = max(10, 60 - level * 3)
             if spawn_timer >= spawn_interval:
                 blocks.append(create_block())
                 spawn_timer = 0
 
-            # Move blocks
             speed = block_speed // 2 if slow_motion else block_speed
             for b in blocks[:]:
                 b["rect"].y += speed
 
-                # Check collision
                 if b["rect"].colliderect(player):
                     if b["color"] == RED:
                         score += 10
@@ -309,7 +281,6 @@ def main():
 
                     blocks.remove(b)
 
-            # Remove blocks off screen
             for b in blocks[:]:
                 if b["rect"].top > HEIGHT:
                     blocks.remove(b)
@@ -318,12 +289,10 @@ def main():
                     else:
                         shield = False
 
-            # Slow motion timeout
             if slow_motion:
                 if pygame.time.get_ticks() - slow_motion_timer > 5000:
                     slow_motion = False
 
-            # Level up check
             new_level = score // 100 + 1
             if new_level > level:
                 level = new_level
@@ -334,7 +303,6 @@ def main():
             if lives <= 0:
                 game_state = 2  # Game over
 
-            # Draw everything
             draw_background_gradient()
             draw_player()
             for b in blocks:
