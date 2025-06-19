@@ -64,6 +64,6 @@ Pull requests and issues are welcome!
 
 ---
 
-## About
+## Desclaimer
 
-This project was created as a learning exercise to practice Python programming and game development basics using Pygame.
+AI was used to generate the read.me and inspire ideas, the rest was coded by me, thanks!
