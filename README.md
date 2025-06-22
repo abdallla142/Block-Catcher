@@ -47,7 +47,7 @@ Make sure all your game assets (images, sounds) are in the same folder as the sc
 
 ## Demo
 
-You can watch a gameplay demo here:  
+You can watch a gameplay demo here:   https://drive.google.com/file/d/1LA7e88_hNUKVCt2fmtEo6NOdWEuXOVEh/view?usp=sharing
 
 
 ## Project Structure
