@@ -1,0 +1,44 @@
+
+Ready to catch some blocks? Here’s how to get the game set up and start playing:
+ * Get the Game Files:
+   First, you need the game files. Head over to the abdallla142/Block-Catcher repository on GitHub. You can either:
+   * Download as a ZIP: Click the green "Code" button and select "Download ZIP." Once downloaded, unzip the folder to a spot you'll remember on your computer (like your Desktop).
+   * Clone the repository (if you use Git): Open your terminal or command prompt and run git clone https://github.com/abdallla142/Block-Catcher.git.
+ * Install Python:
+   If you don't have Python installed, grab it from the official website: https://www.python.org/downloads/. Important for Windows users: During installation, make sure to check the box that says "Add Python to PATH." This makes running commands much smoother.
+ * Create requirements.txt:
+   The game needs pygame to run. In the main Block-Catcher folder you downloaded (the one containing catch blocks2.0.py), create a new plain text file named requirements.txt. Open it and type this single line:
+   pygame
+
+   Then, save the file.
+ * Open Your Terminal/Command Prompt:
+   * Windows: Search for "Command Prompt" or "PowerShell" in your Start menu and open it.
+   * Mac/Linux: Find and open your "Terminal" application.
+ * Go to the Game Folder:
+   In your terminal, use the cd (change directory) command to navigate into the Block-Catcher folder you just downloaded.
+   * Example (adjust for your path): If you unzipped it to your Desktop, you might type: cd C:\Users\YourUsername\Desktop\Block-Catcher (Windows) or cd ~/Desktop/Block-Catcher (Mac/Linux). Press Enter after.
+ * Install Pygame:
+   Once you're in the right folder in your terminal, run this command:
+   pip install -r requirements.txt
+
+   This will install pygame for you.
+ * Launch the Game!
+   After Pygame finishes installing, you can start the game by typing:
+   python "catch blocks2.0.py"
+
+   (We use quotes around the filename because of the space in "catch blocks2.0.py").
+   The game window should pop right up!
+Game Controls & What the Blocks Do:
+ * Move: Use the Left Arrow (←) and Right Arrow (→) keys.
+ * Start/Continue: Press SPACE.
+ * Info: Press I from the title screen for help.
+ * Crazy Mode: Press C from the title screen to unlock all power-ups!
+ * Exit: Press ESC to go back or quit.
+Block Types:
+ * Red: +10 points
+ * Green: +20 points
+ * Yellow: +1 life
+ * Cyan: Gives you a temporary shield
+ * Purple: Triggers temporary slow motion
+
+Disclaimer, these instructions were created by AI in order to deliver my message efficiently.
