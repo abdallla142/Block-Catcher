@@ -1,20 +1,4 @@
-# Block-Catcher
 
-Welcome to Block-Catcher, a challenging Pygame experience where your goal is to catch falling blocks to earn points, extend your lives, and activate special power-ups! Test your reflexes and strategic thinking as you aim for the highest score.
-
----
-
-## Demo
-
-Check out a demo of Block Catcher 2.0 in action:
-[Demo Video](https://www.example.com/your-demo-link-here)
-*(Remember to replace `https://www.example.com/your-demo-link-here` with the actual URL of your demo video!)*
-
----
-
-## How to Play Block-Catcher
-
-Follow these steps to get the game running on your computer:
 
 1.  **Download the Game Files:**
     You can get the game files from this repository by either:
